@@ -28,5 +28,14 @@ namespace BookTicketsAPI.Models
             public string Type { get; set; }
             public List<string> Selected { get; set; }
         }
+        public class GetData
+        {
+            public string MovieName { get; set; }
+            public string NowRunning { get; set; }
+            public string CurrentRunning { get; set; }
+            public string Exclusive { get; set; }
+            public string Duration { get; set; }
+            public string ReleaseData { get; set; }
+        }
     }
 }

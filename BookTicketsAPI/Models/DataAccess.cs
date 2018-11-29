@@ -32,7 +32,7 @@ namespace BookTicketsAPI.Models
                     {
                         if (Selected.Count() > 0)
                         {
-                            Query = AddCondition(Selected, "MovieFormatSOON");
+                            Query = AddFormatCondition(Selected, "MovieFormatSOON");
                         }
                         break;
                     }
@@ -67,7 +67,7 @@ namespace BookTicketsAPI.Models
                     {
                         if (Selected.Count() > 0)
                         {
-                            Query = AddCondition(Selected, "MovieFormat");
+                            Query = AddFormatCondition(Selected, "MovieFormat");
                         }
                         break;
                     }
@@ -75,7 +75,7 @@ namespace BookTicketsAPI.Models
                     {
                         if (Selected.Count() > 0)
                         {
-                            Query = AddCondition(Selected, "MovieFormat");
+                            Query = AddFormatCondition(Selected, "MovieFormat");
                         }
                         break;
                     }
@@ -93,6 +93,22 @@ namespace BookTicketsAPI.Models
                 foreach(string language in lang)
                 {
                     query += joiner + language + "=" + conValue;
+                    joiner = " AND ";
+                }
+            }
+            return query;
+        }
+        public string AddFormatCondition(List<string> conditions, string TableName)
+        {
+            string query = "SELECT * FROM " + TableName;
+            string joiner = " WHERE ";
+            int conValue = 1;
+            foreach (string condition in conditions)
+            {
+                string[] lang = condition.Split(',');
+                foreach (string language in lang)
+                {
+                    query += joiner + '"'+language+'"' + "=" + conValue;
                     joiner = " AND ";
                 }
             }

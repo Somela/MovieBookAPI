@@ -9,8 +9,8 @@ using System.Data.SqlClient;
 using System.Configuration;
 using Newtonsoft.Json;
 using BookTicketsAPI.Models;
-
-
+using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace BookTicketsAPI.Controllers
 {
@@ -30,8 +30,9 @@ namespace BookTicketsAPI.Controllers
             {
                 oMovie.MovieName = new List<string>();
                 oResponse.MovieDetails = new List<string>();
-                List<string> MovieFullDetails = new List<string>();
+                List<object> MovieFullDetails = new List<object>();
                 List<string> MovieQuery = new List<string>();
+                JavaScriptSerializer jss = new JavaScriptSerializer();
                 switch (getObj.PageName)
                 {
                     case "NowPlaying":
@@ -56,12 +57,15 @@ namespace BookTicketsAPI.Controllers
                                 string movieName = dr["MovieName"].ToString();
                                 oMovie.MovieName.Add(movieName);
                             }
+                            MovieQuery = oReuse.GetMovieDetails(oMovie.MovieName, "MOVIESNAVBARSOON");
+                            MovieFullDetails = oReuse.ReturnTable(MovieQuery);
                         }
                         break;
                     default:
                         break;
                 }
-                return Ok(MovieFullDetails);  //return MovieName with Ok status      
+                //return Ok(JsonConvert.SerializeObject(MovieFullDetails));  //return MovieName with Ok status      
+                return Ok(MovieFullDetails);
             }
             catch(Exception ex)
             {
