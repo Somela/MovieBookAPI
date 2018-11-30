@@ -37,5 +37,10 @@ namespace BookTicketsAPI.Models
             public string Duration { get; set; }
             public string ReleaseData { get; set; }
         }
+        public class FormateRequest
+        {
+            public string PageName { get; set; }
+            public string type { get; set; }
+        }
     }
 }

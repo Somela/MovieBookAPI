@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 
 namespace BookTicketsAPI.Models
 {
     public class DataAccess
     {
+        ReuseClass oReuse = new ReuseClass();
         string Query = "";
         public string CommingSoon(string Type, List<string> Selected)
         {
@@ -82,6 +84,68 @@ namespace BookTicketsAPI.Models
             }
             return Query;
         }
+        public DataTable CallNowPlaying(string type)
+        {
+            DataTable dt = new DataTable();
+            switch (type)
+            {
+                case "Language":
+                    {
+                        Query = getQuery("LANGUAGETABLE");
+                        dt=oReuse.GetDBData(Query);           
+                    }
+                    break;
+                case "Genre":
+                    {
+                        Query = getQuery("GenreTable");
+                        dt=oReuse.GetDBData(Query);
+                    }
+                    break;
+                case "Formate":
+                    {
+                        Query = getQuery("FormatTable");
+                        dt=oReuse.GetDBData(Query);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return dt;
+        }
+        public DataTable CallCommingSoon(string type)
+        {
+            DataTable dt = new DataTable();
+            switch (type)
+            {
+                case "Language":
+                    {
+                        Query = getQuery("LANGUAGETABLE");
+                        dt = oReuse.GetDBData(Query);
+                    }
+                    break;
+                case "Genre":
+                    {
+                        Query = getQuery("GenreTable");
+                        dt = oReuse.GetDBData(Query);
+                    }
+                    break;
+                case "Formate":
+                    {
+                        Query = getQuery("FormatTable");
+                        dt = oReuse.GetDBData(Query);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return dt;
+        }
+        public string getQuery(string table)
+        {
+            string query = "select * from " + table;
+            return query;
+        }
+        
         public string AddCondition(List<string> conditions, string TableName)
         {
             string query = "SELECT * FROM " + TableName;

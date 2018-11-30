@@ -64,5 +64,15 @@ namespace BookTicketsAPI.Models
             }
             return GetTableData;
         }
+        public DataTable GetDBData(string Query)
+        {
+            string Con = ConfigurationManager.ConnectionStrings["ConnectionDB"].ConnectionString;
+            SqlConnection con = new SqlConnection(Con);
+            SqlCommand cmd = new SqlCommand(Query, con);
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
+            return dt;
+        }
     }
 }

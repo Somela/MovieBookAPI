@@ -38,7 +38,7 @@ namespace BookTicketsAPI.Controllers
                     case "NowPlaying":
                         {
                             Query = model.NowPlaying(getObj.Type, getObj.Selected);
-                            dt = GetDBData(Query);
+                            dt = oReuse.GetDBData(Query);
                             foreach (DataRow dr in dt.Rows)
                             {
                                 string movieName = dr["MovieName"].ToString();
@@ -51,7 +51,7 @@ namespace BookTicketsAPI.Controllers
                     case "CommingSoon":
                         {
                             Query = model.CommingSoon(getObj.Type, getObj.Selected);
-                            dt = GetDBData(Query);
+                            dt = oReuse.GetDBData(Query);
                             foreach (DataRow dr in dt.Rows)
                             {
                                 string movieName = dr["MovieName"].ToString();
@@ -77,15 +77,40 @@ namespace BookTicketsAPI.Controllers
                 return Content(HttpStatusCode.BadRequest, oResponse);
             }
         }
-        public DataTable GetDBData(string Query)
+        [HttpPost,Route("GetInfo")]
+        public IHttpActionResult Details(DataModel.FormateRequest info)
         {
-            string Con = ConfigurationManager.ConnectionStrings["ConnectionDB"].ConnectionString;
-            SqlConnection con = new SqlConnection(Con);
-            SqlCommand cmd = new SqlCommand(Query, con);
             DataTable dt = new DataTable();
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.Fill(dt);
-            return dt;
-        }
+            try
+            {
+                switch (info.PageName)
+                {
+                    case "NowPlaying":
+                        {
+                            dt = model.CallNowPlaying(info.type);
+                        }
+                        break;
+                    case "CommingSoon":
+                        {
+                            dt = model.CallCommingSoon(info.type);
+                        }
+                        break;
+                    default:
+                        {
+                            dt = model.CallNowPlaying(info.type);
+                        }
+                        break;
+                }
+                return Ok(dt);
+            }catch(Exception ex)
+            {
+                oResponse.Response = new DataModel.ResponseMessage();
+                oResponse.Response.Code = 400;
+                oResponse.Response.Message = ex.Message;
+                oResponse.Response.Severity = "error";
+                Log.LogClass.LogMessage("sendDataToTable Method : " + ex.Message, Log.LogClass.LogLevel.ERROR);
+                return Content(HttpStatusCode.BadRequest, oResponse);
+            }
+        }        
     }
 }
