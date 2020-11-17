@@ -20,13 +20,6 @@ namespace BookTicketsAPI.Models
                 string joiner = " WHERE ";
                 query = query +joiner+ MovieName + "=" + "'" + condition + "'";
                 SelectQuery.Add(query);
-                //query += joiner + MovieName + "=" + "'" + condition + "'";
-                //string[] lang = condition.Split(',');
-                //foreach (string language in lang)
-                //{
-                //    query += joiner + MovieName + "=" + "'" + language + "'";
-                //    SelectQuery.Add(query);
-                //}
             }
             return SelectQuery;
         }
